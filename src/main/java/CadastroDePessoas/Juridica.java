@@ -2,73 +2,92 @@ package CadastroDePessoas;
 
 import java.util.HashSet;
 import java.util.Set;
-import java.util.UUID;
 
 public class Juridica extends Pessoa {
-	
-	private String cnpj;
+	private Cnpj cnpj;
 	private double capitalSocial;
-	private Set<CotaSociedade> cotasSociedade = new HashSet<CotaSociedade>();
-	
-	public Juridica(String nome, String cnpj, double capitalSocial) {
+	private Set<CotaSociedade> cotasSociedade = new HashSet<>();
+
+	public Juridica(Nome nome, Cnpj cnpj, double capitalSocial) {
 		super(nome);
-		this.capitalSocial = capitalSocial;
 		this.cnpj = cnpj;
+		this.capitalSocial = capitalSocial;
 	}
-	
-	public Juridica(UUID id, String nome, String cnpj, double capitalSocial) {
+	public Juridica(Id id, Nome nome, Cnpj cnpj, double capitalSocial) {
 		super(id, nome);
-		this.capitalSocial = capitalSocial;
 		this.cnpj = cnpj;
+		this.capitalSocial = capitalSocial;
 	}
-	
+	public void adicionarSocio(Pessoa socio, double percentualDeParticipacao) {
+		CotaSociedade novaCota = new CotaSociedade();
+		novaCota.socio = socio;
+		novaCota.percentualDeParticipacao = percentualDeParticipacao;
+		
+		double percentualAtual = somarPercentualAtual();
+		if (percentualAtual + percentualDeParticipacao> 100.00) {
+			throw new RuntimeException("A participação total não pode exceder 100%! Percentual atual: " + percentualAtual + ". Você tentou adicionar mais " + percentualDeParticipacao);
+		}
+		
+		this.cotasSociedade.add(novaCota);
+	}
+	private double somarPercentualAtual() {
+		double percentualAtual = 0.00d;
+		for (CotaSociedade cotaSociedade : cotasSociedade) {
+			percentualAtual += cotaSociedade.percentualDeParticipacao;
+		}
+		return percentualAtual;
+	}
+	public void removerSocio(Pessoa socioParaRemover) {
+		Set<CotaSociedade> aux = new HashSet<>();
+		for (CotaSociedade cota : cotasSociedade) {
+			if (!cota.socio.equals(socioParaRemover)) {
+				aux.add(cota);
+			}
+		}
+		this.cotasSociedade = aux;
+	}
 	public double getCapitalSocial() {
 		return capitalSocial;
 	}
 	public String getCnpj() {
-		return cnpj;
+		return cnpj.imprimeCnpj();
 	}
 	
-	public void adicionarSocio(Pessoa socio, double percentualDeParticipacao) {
-		
-		if (socio.id != this.id) {
-			
-			cotasSociedade.add(new CotaSociedade(socio, percentualDeParticipacao));
-		} else {
-			
-			System.out.println("não pode ser sócio de si mesmo!");
-		}
-	}
-	
-	public void removerSocio(Pessoa socio) {
-		
-		boolean verificacao = false;
-		for (CotaSociedade cota : cotasSociedade) {
-			
-			if(cota.socio == socio) {
-				
-				cotasSociedade.remove(cota);
-				verificacao = true;
-			}		
-		}
-		
-		if (!verificacao) {
-			
-			System.out.println(socio.getNome() + " não é sócio");
-		}
-		
-	}
-	
-	
-	private class CotaSociedade{
-		
+	private class CotaSociedade {
 		private double percentualDeParticipacao;
 		private Pessoa socio;
 		
-		public CotaSociedade(Pessoa socio, double percentualDEPArticipacao) {
-			
-			this.percentualDeParticipacao = percentualDEPArticipacao;
-			this.socio = socio;
+		
+		@Override
+		public int hashCode() {
+			final int prime = 31;
+			int result = 1;
+			result = prime * result + getOuterType().hashCode();
+			result = prime * result + ((socio == null) ? 0 : socio.hashCode());
+			return result;
 		}
+		@Override
+		public boolean equals(Object obj) {
+			if (this == obj)
+				return true;
+			if (obj == null)
+				return false;
+			if (getClass() != obj.getClass())
+				return false;
+			CotaSociedade other = (CotaSociedade) obj;
+			if (!getOuterType().equals(other.getOuterType()))
+				return false;
+			if (socio == null) {
+				if (other.socio != null)
+					return false;
+			} else if (!socio.equals(other.socio))
+				return false;
+			return true;
+		}
+		private Juridica getOuterType() {
+			return Juridica.this;
+		}
+		
 	}
+
 }

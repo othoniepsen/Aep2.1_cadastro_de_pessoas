@@ -1,35 +1,28 @@
 package CadastroDePessoas;
 
-import java.util.UUID;
-
 public class Fisica extends Pessoa {
-	
-	private String cpf;
-	private String rg;
-	
-	
-	public Fisica(String nome, String cpf, String rg) {
+
+	private Cpf cpf;
+	private Rg rg;
+
+	public Fisica(Nome nome, Cpf cpf, Rg rg) {
 		super(nome);
 		this.cpf = cpf;
 		this.rg = rg;
 	}
-	
-	public Fisica(UUID id, String nome, String cpf, String rg) {
+
+	public Fisica(Id id, Nome nome, Cpf cpf, Rg rg) {
 		super(id, nome);
 		this.cpf = cpf;
 		this.rg = rg;
 	}
-	
-	
-	public String getCpf() {
-		return cpf;
-	}
-	public String getRg() {
-		return rg;
-	}
-	
-	
 
-	
+	public String getCpf() {
+		return cpf.imprimeCpf();
+	}
+
+	public String getRg() {
+		return rg.imprimeRg();
+	}
 
 }
