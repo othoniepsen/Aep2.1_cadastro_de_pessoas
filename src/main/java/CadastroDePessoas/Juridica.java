@@ -5,27 +5,27 @@ import java.util.Set;
 
 public class Juridica extends Pessoa {
 	private Cnpj cnpj;
-	private double capitalSocial;
+	private CapitalSocial capitalSocial;
 	private Set<CotaSociedade> cotasSociedade = new HashSet<>();
 
-	public Juridica(Nome nome, Cnpj cnpj, double capitalSocial) {
+	public Juridica(Nome nome, Cnpj cnpj, CapitalSocial capitalSocial) {
 		super(nome);
 		this.cnpj = cnpj;
 		this.capitalSocial = capitalSocial;
 	}
-	public Juridica(Id id, Nome nome, Cnpj cnpj, double capitalSocial) {
+	public Juridica(Id id, Nome nome, Cnpj cnpj, CapitalSocial capitalSocial) {
 		super(id, nome);
 		this.cnpj = cnpj;
 		this.capitalSocial = capitalSocial;
 	}
-	public void adicionarSocio(Pessoa socio, double percentualDeParticipacao) {
+	public void adicionarSocio(Pessoa socio, PercentualDeParticipacao percentualDeParticipacao) {
 		CotaSociedade novaCota = new CotaSociedade();
 		novaCota.socio = socio;
-		novaCota.percentualDeParticipacao = new PercentualDeParticipacao(percentualDeParticipacao);
+		novaCota.percentualDeParticipacao = percentualDeParticipacao;
 		
 		double percentualAtual = somarPercentualAtual();
-		if (percentualAtual + percentualDeParticipacao> 100.00) {
-			throw new RuntimeException("A participação total não pode exceder 100%! Percentual atual: " + percentualAtual + ". Você tentou adicionar mais " + percentualDeParticipacao);
+		if (percentualAtual + percentualDeParticipacao.imprimePercentualDeParticipacao()> 100.00) {
+			throw new RuntimeException("A participação total não pode exceder 100%! Percentual atual: " + percentualAtual + ". Você tentou adicionar mais " + percentualDeParticipacao.imprimePercentualDeParticipacao());
 		}
 		
 		this.cotasSociedade.add(novaCota);
@@ -47,7 +47,7 @@ public class Juridica extends Pessoa {
 		this.cotasSociedade = aux;
 	}
 	public double getCapitalSocial() {
-		return capitalSocial;
+		return capitalSocial.imprimeCapitalSocial();
 	}
 	public String getCnpj() {
 		return cnpj.imprimeCnpj();
