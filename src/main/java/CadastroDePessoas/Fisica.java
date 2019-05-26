@@ -4,6 +4,7 @@ public class Fisica extends Pessoa {
 
 	private Cpf cpf;
 	private Rg rg;
+	
 
 	public Fisica(Nome nome, Cpf cpf, Rg rg) {
 		super(nome);
@@ -16,7 +17,7 @@ public class Fisica extends Pessoa {
 		this.cpf = cpf;
 		this.rg = rg;
 	}
-
+	
 	public String getCpf() {
 		return cpf.imprimeCpf();
 	}

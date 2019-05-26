@@ -6,10 +6,6 @@ public class Cpf {
 	
 	private String cpf;
 	
-	public String imprimeCpf() {
-		return cpf;
-	}
-	
 	public Cpf (String cpf) {
 		cpf = cpf.replace('.',' ');
 	    cpf = cpf.replace('-',' ');
@@ -21,7 +17,6 @@ public class Cpf {
 			throw new RuntimeException("Cpf não é válido");
 		}
 	}
-	
 	
 	private boolean validarCpf(String CPF){
 		
@@ -73,6 +68,9 @@ public class Cpf {
 			}
 			  }
 		   
+	public String imprimeCpf() {
+		return cpf;
+	}
 
 		
 	}

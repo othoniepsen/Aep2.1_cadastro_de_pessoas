@@ -6,10 +6,6 @@ public class Cnpj {
 
 	private String cnpj;
 
-	public String imprimeCnpj() {
-		return cnpj;
-	}
-
 	public Cnpj (String cnpj) {
 		cnpj = cnpj.replace('.',' ');
 	    cnpj = cnpj.replace('-',' ');
@@ -23,7 +19,6 @@ public class Cnpj {
 			throw new RuntimeException("Cnpj não é válido");
 		}
 	}
-
 
 	private boolean validarCnpj(String cnpj) {
 		
@@ -73,7 +68,11 @@ public class Cnpj {
 				} catch (InputMismatchException erro) {
 					return (false);
 				}
-			}		
-		
+			}
+	
+	public String imprimeCnpj() {
+		return cnpj;
 	}
+		
+}
 
